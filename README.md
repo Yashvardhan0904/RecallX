@@ -1,66 +1,33 @@
 <div align="center">
-  <img src="assets/logo.png" alt="AgentMemory Logo" width="200" height="200">
+  <img src="assets/logo.png" alt="RecallX Logo" width="200" height="200">
   
-  # AgentMemory
-  **Persistent, Searchable Memory for AI Agents**
-  
-  A production-grade, multi-tenant memory service designed for autonomous AI agents with persistent, structured, and searchable memory across sessions.
+  # RecallX
+  **Persistent Memory Service for AI Agents**
   
   [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
   [![FastAPI](https://img.shields.io/badge/fastapi-0.104.1-009688.svg)](https://fastapi.tiangolo.com/)
   [![PostgreSQL](https://img.shields.io/badge/postgresql-15-336791.svg)](https://www.postgresql.org/)
-  [![License](https://img.shields.io/badge/license-Confidential-red.svg)](#license)
   
 </div>
 
 ---
 
-## Overview
+## What is RecallX?
 
-AgentMemory is a centralized memory service that enables AI agents to maintain persistent, structured, and searchable memories across multiple sessions. Built with modern Python technologies (FastAPI, SQLAlchemy, PostgreSQL), it provides enterprise-grade features like multi-tenancy, audit logging, and sophisticated memory lifecycle management.
-
-### Key Capabilities
-
-- **Persistent Memory** - Store and retrieve agent observations, sessions, and compressed memories
-- **Multi-Tenant** - Securely isolate data between organizations at the database layer
-- **Hybrid Search** - Full-text, vector, and graph-based memory recall
-- **Memory Lifecycle** - Automatic memory consolidation with decay tracking
-- **Enterprise Security** - TLS encryption, SHA-256 key hashing, comprehensive audit trails
-- **High Performance** - <200ms p99 ingestion, <500ms recall latency
-
----
-
-## Table of Contents
-
-- [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Database Schema](#database-schema)
-- [API Endpoints](#api-endpoints)
-- [Configuration](#configuration)
-- [Development](#development)
-- [Performance](#performance)
-- [Security](#security)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+RecallX is a centralized memory service that enables AI agents to store, retrieve, and search memories across sessions. It provides multi-tenant data isolation, audit logging, and high-performance memory recall with sub-second latency.
 
 ---
 
 ## Quick Start
 
 ### Prerequisites
-- **Python 3.12+**
-- **Docker & Docker Compose**
-- **git**
 
-### 1. Clone and Install
+- Python 3.12+
+- Docker & Docker Compose
+
+### 1. Install Dependencies
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/agentmemo.git
-cd agentmemo
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -70,455 +37,69 @@ pip install -r requirements.txt
 docker-compose up -d
 ```
 
-Verify the database is running:
-```bash
-docker-compose ps
-```
-
-**Credentials:**
-- User: `agentmemory`
-- Password: `agentmemory_dev_password`
-- Database: `agentmemory`
-- Port: `5432`
-
 ### 3. Initialize Database
 
 ```bash
 python init_db.py init
 ```
 
-This creates all tables:
-- `tenants` - Organizational units
-- `api_keys` - Authentication credentials
-- `sessions` - Agent activity periods
-- `observations` - Raw agent events
-- `memories` - LLM-compressed memories
-- `audit_log` - Activity audit trail
-
-### 4. Start API Server
+### 4. Run the Server
 
 ```bash
 python main.py
 ```
 
-The API is now available at **http://localhost:8000**
-
-### 5. Verify Health
-
-```bash
-curl http://localhost:8000/health
-curl http://localhost:8000/api/v1/status
-```
-
----
-
-## Architecture
-
-### Project Structure
-
-```
-agentmemo/
-├── models.py              # SQLAlchemy ORM models
-├── database.py            # Database configuration & session management
-├── main.py                # FastAPI application entry point
-├── init_db.py             # Database initialization & migration scripts
-├── requirements.txt       # Python dependencies
-├── docker-compose.yml     # PostgreSQL container orchestration
-├── schema.sql             # SQL schema definition
-├── assets/
-│   └── logo.png          # Project logo
-├── .env                   # Environment configuration (git-ignored)
-├── README.md              # This file
-└── QUICKSTART.md          # Quick reference guide
-```
-
-### Tech Stack
-
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| **API Framework** | FastAPI | 0.104.1 |
-| **ASGI Server** | Uvicorn | 0.24.0 |
-| **ORM** | SQLAlchemy | 2.0.23 |
-| **Database Driver** | psycopg | 3.17.0 |
-| **Database** | PostgreSQL | 15 |
-| **Validation** | Pydantic | 2.5.0 |
-| **Containerization** | Docker Compose | 3.8 |
-
----
-
-## Installation
-
-### Full Installation Guide
-
-#### Step 1: Install Python Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-#### Step 2: Start PostgreSQL Database
-
-```bash
-# Start the container
-docker-compose up -d
-
-# Check status
-docker-compose ps
-
-# View logs
-docker-compose logs postgres
-```
-
-#### Step 3: Initialize Database Schema
-
-```bash
-# Create all tables
-python init_db.py init
-
-# Or reset the database (⚠️ deletes all data)
-python init_db.py reset
-
-# Or drop all tables (⚠️ destructive)
-python init_db.py drop
-```
-
-#### Step 4: Configure Environment
-
-Create a `.env` file:
-
-```env
-# Database
-DATABASE_URL=postgresql+psycopg://agentmemory:agentmemory_dev_password@localhost:5432/agentmemory
-
-# API Configuration
-API_PORT=8000
-API_HOST=0.0.0.0
-ENVIRONMENT=development
-
-# Logging
-SQLALCHEMY_ECHO=False
-```
-
-#### Step 5: Start the API Server
-
-```bash
-python main.py
-```
-
----
-
-## Database Schema
-
-### Tables Overview
-
-| Table | Purpose | Key Fields |
-|-------|---------|-----------|
-| **tenants** | Organizational units | `id`, `name`, `created_at` |
-| **api_keys** | Authentication credentials | `id`, `tenant_id`, `key_hash`, `scopes`, `rate_limit_per_min` |
-| **sessions** | Agent activity periods | `id`, `tenant_id`, `started_at`, `ended_at`, `summary`, `top_concepts` |
-| **observations** | Raw agent events | `id`, `tenant_id`, `session_id`, `type`, `tool`, `input`, `output`, `files`, `tags` |
-| **memories** | LLM-compressed memories | `id`, `tenant_id`, `title`, `content`, `facts`, `concepts`, `strength`, `decay_at` |
-| **audit_log** | Activity audit trail | `id`, `tenant_id`, `action`, `target_id`, `details`, `created_at` |
-
-### Core Features
-
-#### Multi-Tenancy
-- Every query filtered by `tenant_id` at the database layer
-- **Architecturally impossible** to access cross-tenant data
-- Complete data isolation by design
-
-#### Memory Lifecycle
-- `strength` field (1-10) tracks memory salience
-- `decay_at` timestamp for consolidation tier transitions
-- `deleted_at` for soft-delete support
-- Automatic memory aging and consolidation
-
-#### Audit & Governance
-- All mutations logged to `audit_log`
-- Support for soft-delete and hard-delete operations
-- Complete activity tracking for compliance
-
----
-
-## API Endpoints
-
-### Overview (Coming Soon)
-
-Comprehensive REST API with the following groups:
-
-```
-/auth          - API key management
-/v1/sessions   - Agent session management
-/v1/observations - Raw event ingestion
-/v1/memory     - Memory recall, search, and retrieval
-/v1/governance - Audit, deletion, and exports
-```
-
-### Authentication
-- `POST /auth/keys` - Create API key
-- `GET /auth/keys` - List keys
-- `DELETE /auth/keys/{id}` - Revoke key
-
-### Session Management
-- `POST /v1/sessions/start` - Begin agent session
-- `POST /v1/sessions/end` - Close agent session
-- `GET /v1/sessions/{id}` - Retrieve session details
-
-### Ingestion
-- `POST /v1/observations` - Ingest observation
-- `POST /v1/observations/batch` - Batch ingest
-
-### Memory & Retrieval
-- `POST /v1/memory/recall` - Hybrid memory recall
-- `POST /v1/memory/smart-search` - Advanced search
-- `GET /v1/memory/profile` - Get memory profile
-- `GET /v1/memory/timeline` - Get memory timeline
-
-### Governance
-- `POST /v1/memory/delete` - Delete memory
-- `GET /v1/memory/audit` - Query audit log
-- `POST /v1/memory/export` - Export memories
-- `POST /v1/memory/snapshot` - Create snapshot
+The API is available at **http://localhost:8000**
 
 ---
 
 ## Configuration
 
-### Environment Variables
-
-Create a `.env` file in the project root:
+Create a `.env` file:
 
 ```env
-# Database Connection
-DATABASE_URL=postgresql+psycopg://user:password@host:5432/database
-
-# API Configuration
+DATABASE_URL=postgresql+psycopg://agentmemory:agentmemory_dev_password@localhost:5432/agentmemory
 API_PORT=8000
 API_HOST=0.0.0.0
-
-# Environment Mode
-ENVIRONMENT=development        # development | production
-
-# Logging
-SQLALCHEMY_ECHO=False          # Enable SQL query logging
-LOG_LEVEL=INFO                 # DEBUG | INFO | WARNING | ERROR
+ENVIRONMENT=development
+SQLALCHEMY_ECHO=False
 ```
 
-### Database Commands
+---
+
+## Database Management
 
 ```bash
-# Initialize database
+# Initialize
 python init_db.py init
 
-# Reset database (⚠️ deletes all data)
+# Reset (deletes all data)
 python init_db.py reset
-
-# Drop all tables (⚠️ destructive)
-python init_db.py drop
 
 # Connect to PostgreSQL
 docker exec -it agentmemory_db psql -U agentmemory -d agentmemory
 
-# Stop PostgreSQL
+# Stop
 docker-compose down
-
-# View PostgreSQL logs
-docker-compose logs -f postgres
 ```
 
 ---
 
-## Development
+## Tech Stack
 
-### Run in Debug Mode
-
-```bash
-ENVIRONMENT=development python main.py
-```
-
-### Enable SQL Query Logging
-
-```bash
-SQLALCHEMY_ECHO=True python main.py
-```
-
-### Interactive Python Session
-
-```python
-import asyncio
-from database import get_db_session
-from models import Tenant
-from sqlalchemy import text
-
-async def test():
-    async with get_db_session() as session:
-        result = await session.execute(text("SELECT count(*) FROM tenants"))
-        print(f"Total tenants: {result.scalar()}")
-
-asyncio.run(test())
-```
-
-### Run Tests (Placeholder)
-
-```bash
-pytest tests/ -v
-```
-
----
-
-## Performance
-
-### Performance Targets
-
-| Metric | Target | Status |
-|--------|--------|--------|
-| **Ingestion Latency** | < 200ms p99 | ✅ |
-| **Recall Latency** | < 500ms p99 (≤20 memories) | ✅ |
-| **Concurrent Tenants** | ≥ 100 | ✅ |
-| **Availability** | 99.5% uptime | 🔄 |
-
-### Optimization Tips
-
-1. **Enable Connection Pooling** - Configured in `database.py`
-2. **Index Frequently Queried Columns** - See `models.py` for indexes
-3. **Monitor Query Performance** - Enable `SQLALCHEMY_ECHO=True`
-4. **Use Batch Operations** - For high-volume ingestion
-
----
-
-## Security
-
-### Built-In Security Features
-
-- **TLS 1.2+** for all external traffic
-- **SHA-256 hashing** for API keys
-- **Tenant isolation** at database layer
-- **Privacy scrubbing** of sensitive data
-- **Comprehensive audit logging** of all mutations
-- **Rate limiting** per API key
-- **Soft-delete support** for compliance
-
-### Best Practices
-
-1. **Never commit `.env` files** - Add to `.gitignore`
-2. **Use strong API key passphrases**
-3. **Rotate keys regularly**
-4. **Monitor audit logs** for suspicious activity
-5. **Enable TLS** in production
-6. **Use environment variables** for secrets
-
----
-
-## Troubleshooting
-
-### Database Connection Issues
-
-**Error: `FATAL: role "agentmemory" does not exist`**
-```bash
-docker-compose restart postgres
-docker-compose logs postgres
-```
-
-**Error: `could not translate host name "postgres" to address`**
-```bash
-# Ensure Docker network is up
-docker network ls
-docker-compose down
-docker-compose up -d
-```
-
-**Error: `Connection refused` on port 5432**
-```bash
-# Verify container is running
-docker-compose ps
-
-# Check logs
-docker-compose logs postgres
-```
-
-### SQLAlchemy Issues
-
-**Error: `ModuleNotFoundError: No module named 'sqlalchemy'`**
-```bash
-pip install -r requirements.txt
-```
-
-**Error: `RuntimeError: Event loop is closed`**
-- Use the provided `get_db_session()` context manager
-- Don't manually create/close event loops
-- Use async/await patterns consistently
-
-### FastAPI Issues
-
-**Error: `Address already in use`**
-```bash
-# Kill process on port 8000
-lsof -ti:8000 | xargs kill -9
-```
-
-**Error: `Module not found` in imports**
-```bash
-# Verify PYTHONPATH
-export PYTHONPATH="${PYTHONPATH}:$(pwd)"
-python main.py
-```
-
----
-
-## Resources
-
-- 📖 [SQLAlchemy 2.0 Documentation](https://docs.sqlalchemy.org/20/)
-- 🚀 [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- 🗄️ [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- 🔌 [psycopg 3 Documentation](https://www.psycopg.org/psycopg3/)
-- 📋 [SRS Specification](./agentmemory_srs.pdf)
-
----
-
-## Roadmap
-
-### Completed
-- PostgreSQL setup with Docker Compose
-- SQLAlchemy models from SRS schema
-- Database initialization scripts
-- Multi-tenant architecture design
-- Audit logging foundation
-
-### In Progress
-- API endpoints (auth, ingestion, retrieval)
-- Service layer (LLM compression, indexing)
-- Hybrid search (BM25, vector, graph)
-
-### Coming Soon
-- Memory lifecycle/consolidation
-- Governance endpoints
-- Comprehensive logging & metrics
-- Test suite
-- API documentation (Swagger/OpenAPI)
-- Kubernetes deployment
-- Performance benchmarking
+- **Framework:** FastAPI
+- **Database:** PostgreSQL 15
+- **ORM:** SQLAlchemy 2.0
+- **Driver:** psycopg 3.17
 
 ---
 
 ## License
 
-**Confidential - Internal Project Document**
-
-This project is proprietary and confidential. Unauthorized copying or distribution is prohibited.
-
----
-
-## Contributors
-
-- Development Team
-- Product Team
+Confidential - Internal Project
 
 ---
 
 <div align="center">
-  
-  **Made for AI agents**
-  
-  Last Updated: May 21, 2026 | Status: Foundation Phase
-  
+  Last Updated: May 21, 2026
 </div>
