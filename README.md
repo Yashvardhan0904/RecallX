@@ -1,6 +1,6 @@
-<div align="center">
+<div align="center ">
   
-  ![RecallX Logo](assets/logo.png)
+  <img src="assets/logo.png" alt="RecallX Logo" width="140" height="140">
   
   # RecallX
   
