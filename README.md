@@ -1,25 +1,31 @@
-<div align="center ">
+<div align="center">
+  <br />
+  <img src="assets/logo.png" alt="RecallX Logo" width="120" height="120" style="margin-bottom: 20px;">
   
-  <img src="assets/logo.png" alt="RecallX Logo" width="140" height="140">
+  <h1 style="margin: 10px 0; font-size: 2.5em; font-weight: 700;">RecallX</h1>
+  <p style="margin: 5px 0 20px 0; font-size: 1.1em; color: #666;">Persistent Memory Service for AI Agents</p>
   
-  # RecallX
+  <div style="margin: 20px 0;">
+    <a href="https://www.python.org/" style="text-decoration: none; margin: 0 8px;">
+      <img src="https://img.shields.io/badge/Python-3.12%2B-3776ab?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    </a>
+    <a href="https://fastapi.tiangolo.com/" style="text-decoration: none; margin: 0 8px;">
+      <img src="https://img.shields.io/badge/FastAPI-0.104.1-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    </a>
+    <a href="https://www.postgresql.org/" style="text-decoration: none; margin: 0 8px;">
+      <img src="https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+    </a>
+  </div>
   
-  ### Persistent Memory Service for AI Agents
+  <hr style="margin: 30px 0; border: none; border-top: 2px solid #e0e0e0;">
   
-  *Store, retrieve, and search memories across agent sessions with enterprise-grade security and multi-tenancy.*
+  <p style="font-size: 0.95em; margin: 15px 0;">
+    <strong>⚡ High-Performance</strong> • <strong>🔐 Secure & Isolated</strong> • <strong>📊 Audited</strong>
+  </p>
   
-  [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776ab?style=flat-square&logo=python)](https://www.python.org/)
-  [![FastAPI](https://img.shields.io/badge/fastapi-0.104.1-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
-  [![PostgreSQL](https://img.shields.io/badge/postgresql-15-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
-  [![License](https://img.shields.io/badge/license-Confidential-red?style=flat-square)](LICENSE)
-  
-  ---
-  
-  **High-Performance Memory Recall** • **Multi-Tenant Isolation** • **Audit Logging**
+  <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
   
 </div>
-
----
 
 ## What is RecallX?
 
