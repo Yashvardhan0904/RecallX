@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="assets/logo.png" alt="RecallX Logo" width="120" height="120" style="margin-bottom: 20px;">
+  <img src="assets/logo.png" alt="RecallX Logo" width="200" height="200" style="margin-bottom: 20px;">
   
   <h1 style="margin: 10px 0; font-size: 2.5em; font-weight: 700;">RecallX</h1>
   <p style="margin: 5px 0 20px 0; font-size: 1.1em; color: #666;">Persistent Memory Service for AI Agents</p>
@@ -17,13 +17,6 @@
     </a>
   </div>
   
-  <hr style="margin: 30px 0; border: none; border-top: 2px solid #e0e0e0;">
-  
-  <p style="font-size: 0.95em; margin: 15px 0;">
-    <strong>⚡ High-Performance</strong> • <strong>🔐 Secure & Isolated</strong> • <strong>📊 Audited</strong>
-  </p>
-  
-  <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
   
 </div>
 
