@@ -1,12 +1,21 @@
 <div align="center">
-  <img src="assets/logo.png" alt="RecallX Logo" width="200" height="200">
+  
+  ![RecallX Logo](assets/logo.png)
   
   # RecallX
-  **Persistent Memory Service for AI Agents**
   
-  [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
-  [![FastAPI](https://img.shields.io/badge/fastapi-0.104.1-009688.svg)](https://fastapi.tiangolo.com/)
-  [![PostgreSQL](https://img.shields.io/badge/postgresql-15-336791.svg)](https://www.postgresql.org/)
+  ### Persistent Memory Service for AI Agents
+  
+  *Store, retrieve, and search memories across agent sessions with enterprise-grade security and multi-tenancy.*
+  
+  [![Python 3.12+](https://img.shields.io/badge/python-3.12+-3776ab?style=flat-square&logo=python)](https://www.python.org/)
+  [![FastAPI](https://img.shields.io/badge/fastapi-0.104.1-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
+  [![PostgreSQL](https://img.shields.io/badge/postgresql-15-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
+  [![License](https://img.shields.io/badge/license-Confidential-red?style=flat-square)](LICENSE)
+  
+  ---
+  
+  **High-Performance Memory Recall** • **Multi-Tenant Isolation** • **Audit Logging**
   
 </div>
 
