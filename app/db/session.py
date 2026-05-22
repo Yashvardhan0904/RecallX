@@ -1,10 +1,8 @@
 """
-Database configuration and session management
-Uses SQLAlchemy 2.0 with asyncpg (psycopg3) for async support
+Database session management and engine configuration
 """
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import event, pool
 from contextlib import asynccontextmanager
 import logging
 from os import getenv
@@ -22,9 +20,9 @@ engine = create_async_engine(
     DATABASE_URL,
     echo=getenv("SQLALCHEMY_ECHO", "False").lower() == "true",
     future=True,
-    pool_pre_ping=True,  # Verify connections before using them
-    pool_size=20,  # Connection pool size
-    max_overflow=10,  # Overflow connections
+    pool_pre_ping=True,
+    pool_size=20,
+    max_overflow=10,
     connect_args={
         "timeout": 10,
         "server_settings": {"application_name": "agentmemory"},
@@ -44,7 +42,6 @@ async_session = sessionmaker(
 async def get_session() -> AsyncSession:
     """
     Dependency for FastAPI to inject database sessions
-    Usage: async def endpoint(session: AsyncSession = Depends(get_session))
     """
     async with async_session() as session:
         try:
@@ -72,11 +69,8 @@ async def get_db_session():
 
 
 async def init_db():
-    """
-    Initialize database schema
-    Creates all tables defined in models
-    """
-    from models import Base
+    """Initialize database schema"""
+    from app.db.base import Base
     
     async with engine.begin() as conn:
         logger.info("Creating database tables...")
@@ -84,12 +78,15 @@ async def init_db():
         logger.info("Database tables created successfully")
 
 
+async def close_db():
+    """Close database connection pool"""
+    await engine.dispose()
+    logger.info("Database connections closed")
+
+
 async def drop_db():
-    """
-    Drop all tables (use with caution!)
-    Useful for testing and development
-    """
-    from models import Base
+    """Drop all tables (use with caution!)"""
+    from app.db.base import Base
     
     async with engine.begin() as conn:
         logger.warning("Dropping all database tables...")
@@ -98,6 +95,5 @@ async def drop_db():
 
 
 async def close_db():
-    """Close database connection pool"""
+    """Close database engine"""
     await engine.dispose()
-    logger.info("Database connections closed")

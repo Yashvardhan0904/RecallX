@@ -6,9 +6,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 import logging
-from os import getenv
 
-from database import init_db, close_db, get_session
+from app.db import init_db, close_db, get_session
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -86,14 +85,12 @@ async def status(session: AsyncSession = Depends(get_session)):
 
 if __name__ == "__main__":
     import uvicorn
+    from app.core.config import API_HOST, API_PORT, ENVIRONMENT
     
-    host = getenv("API_HOST", "0.0.0.0")
-    port = int(getenv("API_PORT", "8000"))
-    
-    logger.info(f"Starting server on {host}:{port}")
+    logger.info(f"Starting server on {API_HOST}:{API_PORT}")
     uvicorn.run(
         "main:app",
-        host=host,
-        port=port,
-        reload=getenv("ENVIRONMENT", "development") == "development"
+        host=API_HOST,
+        port=API_PORT,
+        reload=ENVIRONMENT == "development"
     )
