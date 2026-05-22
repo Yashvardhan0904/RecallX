@@ -1,1 +1,1 @@
-"""RecallX Application Package"""
+"""AgentMemory Application Package"""
